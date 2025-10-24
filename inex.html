@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SM High Tech Industrial Engineering Care - Web Development</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0073e6, #005bb5);
+      color: white;
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+      letter-spacing: 1px;
+    }
+
+    header h2 {
+      margin: 5px 0;
+      font-weight: normal;
+    }
+
+    header h3 {
+      margin-top: 5px;
+      font-weight: 500;
+      color: #dfe9f3;
+    }
+
+    main {
+      padding: 30px;
+      max-width: 1100px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin-top: -40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    form input {
+      flex: 1 1 200px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    form input:focus {
+      border-color: #0073e6;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 115, 230, 0.3);
+    }
+
+    form button {
+      background-color: #0073e6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 600;
+    }
+
+    form button:hover {
+      background-color: #005bb5;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    thead {
+      background: #0073e6;
+      color: white;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    button.edit, button.delete {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+      font-size: 13px;
+    }
+
+    button.edit {
+      background-color: #28a745;
+    }
+
+    button.delete {
+      background-color: #dc3545;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+      background-color: #f0f0f0;
+      color: #666;
+      border-top: 1px solid #ddd;
+    }
+
+    @media (max-width: 768px) {
+      form {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SM High Tech Industrial Engineering Care</h1>
+    <h2>Web Development</h2>
+    <h3>Trainer: Abdullah Al Mamun</h3>
+  </header>
+
+  <main>
+    <h2 style="text-align:center; color:#0073e6;">Dynamic To-Do List</h2>
+    <form id="toDoForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="text" id="polytechnic" placeholder="Your Polytechnic" required />
+      <input type="number" id="classNo" placeholder="Class No." required />
+      <input type="date" id="classDate" required />
+      <input type="text" id="toolsUsed" placeholder="Class Tools Used" required />
+      <input type="text" id="workDetails" placeholder="Class Work Details" required />
+      <input type="text" id="remarks" placeholder="Remarks" required />
+      <button type="submit">Submit</button>
+    </form>
+
+    <table id="todoTable">
+      <thead>
+        <tr>
+          <th>Your Name</th>
+          <th>Your Polytechnic</th>
+          <th>Class No.</th>
+          <th>Class Date</th>
+          <th>Class Tools Used</th>
+          <th>Class Work Details</th>
+          <th>Remarks</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <footer>
+    &copy; 2025 SM High Tech Industrial Engineering Care | Developed for Web Development Course
+  </footer>
+
+  <script>
+    const form = document.getElementById("toDoForm");
+    const tableBody = document.querySelector("#todoTable tbody");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const polytechnic = document.getElementById("polytechnic").value;
+      const classNo = document.getElementById("classNo").value;
+      const classDate = document.getElementById("classDate").value;
+      const toolsUsed = document.getElementById("toolsUsed").value;
+      const workDetails = document.getElementById("workDetails").value;
+      const remarks = document.getElementById("remarks").value;
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${name}</td>
+        <td>${polytechnic}</td>
+        <td>${classNo}</td>
+        <td>${classDate}</td>
+        <td>${toolsUsed}</td>
+        <td>${workDetails}</td>
+        <td>${remarks}</td>
+        <td>
+          <button class="edit">Edit</button>
+          <button class="delete">Delete</button>
+        </td>
+      `;
+
+      tableBody.appendChild(row);
+      form.reset();
+
+      row.querySelector(".edit").addEventListener("click", () => editRow(row));
+      row.querySelector(".delete").addEventListener("click", () => row.remove());
+    });
+
+    function editRow(row) {
+      const cells = row.querySelectorAll("td");
+      document.getElementById("name").value = cells[0].textContent;
+      document.getElementById("polytechnic").value = cells[1].textContent;
+      document.getElementById("classNo").value = cells[2].textContent;
+      document.getElementById("classDate").value = cells[3].textContent;
+      document.getElementById("toolsUsed").value = cells[4].textContent;
+      document.getElementById("workDetails").value = cells[5].textContent;
+      document.getElementById("remarks").value = cells[6].textContent;
+      row.remove();
+    }
+  </script>
+</body>
+</html>
